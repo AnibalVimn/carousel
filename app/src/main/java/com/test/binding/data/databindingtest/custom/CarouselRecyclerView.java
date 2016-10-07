@@ -99,7 +99,7 @@ public class CarouselRecyclerView extends RecyclerView {
 
         Log.d(TAG, "on touch action: " + e.getAction());
 
-        int action = e.getAction();
+        int action = MotionEventCompat.getActionMasked(e);
 
         // If this is the first event we are gonna pass to the parent, we need to make sure it's a DOWN
         // event, so any other View that will handle it can start from this point until the end of the

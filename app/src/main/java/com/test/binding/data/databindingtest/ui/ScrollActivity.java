@@ -82,7 +82,6 @@ public class ScrollActivity extends AppCompatActivity
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setEnabled(false);
         ((CarouselRecyclerView) mRecyclerView).setScrollListener(this);
         mLayoutManager = new CarouselLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -107,6 +106,7 @@ public class ScrollActivity extends AppCompatActivity
 
         // TODO Make number of items generic
         int widthRecyclerViewItem = widthPager / 3;
+        //int widthRecyclerViewItem = getResources().getDimensionPixelSize(R.dimen.item_width);
 
         // No more scrolling => go to item
         if (positionOffsetPixels == 0) {
@@ -129,6 +129,7 @@ public class ScrollActivity extends AppCompatActivity
             }
         }
 
+        // If one page of the pager moves X pixels => we move one item from the RecyclerView the proportional pixels
         int childOffset = positionOffsetPixels * widthRecyclerViewItem / widthPager;
         int offset = childOffset - mLastPagerChildOffset;
 
@@ -156,7 +157,7 @@ public class ScrollActivity extends AppCompatActivity
     }
 
     /**
-     * Create some fake componets to be displayed.
+     * Create some fake data to be displayed.
      */
     private List<User> createList() {
 

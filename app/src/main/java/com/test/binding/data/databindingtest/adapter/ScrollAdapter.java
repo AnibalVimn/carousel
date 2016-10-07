@@ -42,10 +42,13 @@ public class ScrollAdapter extends RecyclerView.Adapter<ScrollAdapter.ViewHolder
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_list, parent, false);
+
+        // Change the width of the child to always have at least 3 displayed on screen
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) v.getLayoutParams();
 
-        //TODO Make number of items generic
+        // TODO Make number of items generic
         params.width = mScreenWidth / 3;
+        //params.width = mContext.getResources().getDimensionPixelSize(R.dimen.item_width);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
