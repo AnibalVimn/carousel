@@ -47,8 +47,8 @@ public class ScrollAdapter extends RecyclerView.Adapter<ScrollAdapter.ViewHolder
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) v.getLayoutParams();
 
         // TODO Make number of items generic
-        params.width = mScreenWidth / 3;
-        //params.width = mContext.getResources().getDimensionPixelSize(R.dimen.item_width);
+        //params.width = mScreenWidth / 3;
+        params.width = mContext.getResources().getDimensionPixelSize(R.dimen.item_width);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;

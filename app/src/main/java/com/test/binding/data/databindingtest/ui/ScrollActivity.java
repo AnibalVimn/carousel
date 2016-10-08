@@ -105,8 +105,8 @@ public class ScrollActivity extends AppCompatActivity
         int widthPager = mPager.getWidth();
 
         // TODO Make number of items generic
-        int widthRecyclerViewItem = widthPager / 3;
-        //int widthRecyclerViewItem = getResources().getDimensionPixelSize(R.dimen.item_width);
+        //int widthRecyclerViewItem = widthPager / 3;
+        int widthRecyclerViewItem = getResources().getDimensionPixelSize(R.dimen.item_width);
 
         // No more scrolling => go to item
         if (positionOffsetPixels == 0) {

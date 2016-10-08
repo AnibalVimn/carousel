@@ -21,16 +21,6 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
 
     private boolean mFirstTime = true;
 
-    /**
-     * One third of the total width of the layout.
-     */
-    private int mOneThirdWidth;
-
-    /**
-     * Two thirds of the total width of the layout.
-     */
-    private int mTwoThirdsWidth;
-
     public CarouselLinearLayoutManager(Context context, int orientation, boolean reverseLayout)    {
         super(context, orientation, reverseLayout);
     }
@@ -41,22 +31,7 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
 
         if (mFirstTime) {
 
-            // The Layout will consist of three columns when it comes to scaling. The views will only
-            //scale when they enter/leave the one in the middle.
-            mOneThirdWidth = getWidth() / 3;
-            mTwoThirdsWidth = mOneThirdWidth * 2;
-
-            for (int i = findFirstVisibleItemPosition(); i <= findLastVisibleItemPosition(); i++) {
-                View view = findViewByPosition(i);
-
-                int left = view.getLeft();
-
-                if (left <= mTwoThirdsWidth && left >= mOneThirdWidth) {
-                    scaleView(view, mTwoThirdsWidth, mOneThirdWidth, left, NORMAL_SCALE, HIGH_SCALE);
-                } else if (left >= 0 && left <= mOneThirdWidth) {
-                    scaleView(view, mOneThirdWidth, 0, left, HIGH_SCALE, NORMAL_SCALE);
-                }
-            }
+            scrollHorizontallyBy(0, recycler, state);
 
             mFirstTime = false;
         }
@@ -65,41 +40,28 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
     @Override
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler, RecyclerView.State state) {
 
-        Log.d(TAG, "scroll by " + dx + ", onethird: " + mOneThirdWidth + ", twothirds: " + mTwoThirdsWidth);
+        Log.d(TAG, "scroll by " + dx);
+
+        // One third of the total width of the layout.
+        int oneThirdWidth;
+
+        // Two thirds of the total width of the layout.
+        int twoThirdsWidth;
 
         for (int i = findFirstVisibleItemPosition(); i <= findLastVisibleItemPosition(); i++) {
             View view = findViewByPosition(i);
 
+            // The Layout will consist of three columns when it comes to scaling. The views will only
+            //scale when they enter/leave the one in the middle.
+            oneThirdWidth = (getWidth() - view.getWidth()) / 2;
+            twoThirdsWidth = oneThirdWidth + view.getWidth();
+
             int left = view.getLeft();
-            int right = view.getRight();
 
-            if (dx > 0) {
-
-                // Move to the left
-                Log.d(TAG, "view position " +  i + ", left: " + view.getLeft());
-
-                if (left <= mTwoThirdsWidth && left >= mOneThirdWidth && right >= mTwoThirdsWidth) {
-                    // View scale up
-                    scaleView(view, mTwoThirdsWidth, mTwoThirdsWidth - view.getWidth() , left, NORMAL_SCALE, HIGH_SCALE);
-
-                } else if (left >= 0 && left <= mOneThirdWidth && right >= mOneThirdWidth) {
-                    // View scale down
-                    scaleView(view, mOneThirdWidth, mOneThirdWidth - view.getWidth(), left, HIGH_SCALE, NORMAL_SCALE);
-                }
-
-            } else {
-
-                // Move to the right
-                Log.d(TAG, "view position " +  i + ", right: " + view.getRight());
-
-                if (right >= mOneThirdWidth && right <= mTwoThirdsWidth && left <= mOneThirdWidth) {
-                    // View scale up
-                    scaleView(view, mOneThirdWidth + view.getWidth(), mOneThirdWidth, right, HIGH_SCALE, NORMAL_SCALE);
-
-                } else if (right >= mTwoThirdsWidth && right <= getWidth() && left <= mTwoThirdsWidth) {
-                    // View scale down
-                    scaleView(view, mTwoThirdsWidth + view.getWidth(), mTwoThirdsWidth, right, NORMAL_SCALE, HIGH_SCALE);
-                }
+            if (left <= twoThirdsWidth && left >= oneThirdWidth) {
+                scaleView(view, twoThirdsWidth, oneThirdWidth, left, NORMAL_SCALE, HIGH_SCALE);
+            } else if (left >= 0 && left <= oneThirdWidth) {
+                scaleView(view, oneThirdWidth, 0, left, HIGH_SCALE, NORMAL_SCALE);
             }
         }
 
