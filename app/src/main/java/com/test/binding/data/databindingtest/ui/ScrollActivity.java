@@ -78,7 +78,7 @@ public class ScrollActivity extends AppCompatActivity
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(this);
+        mPager.addOnPageChangeListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -110,9 +110,7 @@ public class ScrollActivity extends AppCompatActivity
 
         // No more scrolling => go to item
         if (positionOffsetPixels == 0) {
-            mRecyclerView.scrollToPosition(position);
             mLastPagerChildOffset = 0;
-
             mLastPagerPosition = position;
             mLastPagerPositionOffset = positionOffset;
             return;

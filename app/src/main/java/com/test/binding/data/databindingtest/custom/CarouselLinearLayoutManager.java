@@ -71,8 +71,10 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
     // If you are a mathematician or physicist maybe you could come up with a better equation to calculate the scale ;)
     private float scaleView(View view, int maxDistante, int minDistance, int distance, float maxDistanceScale, float minDistanceScale) {
         float scale = (float) (minDistanceScale + (double) (((distance - minDistance) * (maxDistanceScale - minDistanceScale)) / (maxDistante - minDistance)));
-        view.setScaleX(scale);
-        view.setScaleY(scale);
+        if (scale != view.getScaleX()) {
+            view.setScaleX(scale);
+            view.setScaleY(scale);
+        }
 
         return scale;
     }
